@@ -244,7 +244,11 @@ def decode(document, obj):
                             color_number & 0xFF).name()
 
             strand = stap_strand_set.getStrand(base_idx)
-            strand.oligo().applyColor(color, use_undostack=False)
+            # Bug - returned strand may be None, so check for that:
+            if strand:
+                strand.oligo().applyColor(color, use_undostack=False)
+            else:
+                print("OBS: vh %s, stap_strand at base_idx %s: strand is: %s" % (vh_num, base_idx, strand))
 
     if 'oligos' in obj:
         for oligo in obj['oligos']:
